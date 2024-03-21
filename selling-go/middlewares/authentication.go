@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"net/http"
 	"selling-go/helpers"
 
@@ -19,7 +20,7 @@ func Authentication() gin.HandlerFunc {
 			})
 			return
 		}
-
+		fmt.Println("verified: ", verifyToken)
 		c.Set("userData", verifyToken)
 		c.Next()
 	}

@@ -8,8 +8,9 @@ import (
 type Order struct {
 	gorm.Model
 	ProductID uint `gorm:"not null" json:"product_id" form:"product_id" valid:"required~ProductID is required"`
-	UserID    uint `gorm:"not null" json:"user_id" form:"user_id" valid:"required~UserID is required"`
+	UserID    uint
 	Quantity  uint `gorm:"not null" json:"qty" form:"qty" valid:"required~qty is required"`
+	Invoices  Invoice
 	Payments  []Payment
 }
 
