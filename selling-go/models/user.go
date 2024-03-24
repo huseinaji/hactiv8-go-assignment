@@ -15,7 +15,7 @@ type User struct {
 	Orders   []Order
 	Invoices []Invoice
 	Payments []Payment
-	Role     string
+	Role     string `json:"role" form:"role"`
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {

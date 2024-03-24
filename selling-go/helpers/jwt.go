@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -13,10 +12,11 @@ import (
 
 var secretKey = "inisecretbroooww1239-9woeufopqd'vadsf"
 
-func GenToken(id uint, email string) string {
+func GenToken(id uint, email string, role string) string {
 	claims := jwt.MapClaims{
 		"id":    id,
 		"email": email,
+		"role":  role,
 		"exp":   time.Now().Add(time.Minute * 15).Unix(),
 	}
 
@@ -36,7 +36,6 @@ func VerifyToken(c *gin.Context) (interface{}, error) {
 	}
 
 	stringToken := strings.Split(headerToken, " ")[1]
-	fmt.Println("token", stringToken)
 
 	token, _ := jwt.Parse(stringToken, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -47,7 +46,6 @@ func VerifyToken(c *gin.Context) (interface{}, error) {
 		}
 		return []byte(secretKey), nil
 	})
-	fmt.Println("token2", token)
 
 	if _, ok := token.Claims.(jwt.MapClaims); !ok || !token.Valid {
 		return nil, errResponse

@@ -19,7 +19,7 @@ var (
 	err      error
 )
 
-func StartDB() {
+func StartDB() *gorm.DB {
 	config := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", host, user, password, dbname, dbPort)
 	db, err = gorm.Open(postgres.Open(config), &gorm.Config{})
 
@@ -29,8 +29,6 @@ func StartDB() {
 
 	fmt.Println("DB Connected")
 	db.AutoMigrate(models.User{}, models.Product{}, models.Order{}, models.Invoice{}, models.Payment{})
-}
 
-func GetDB() *gorm.DB {
 	return db
 }

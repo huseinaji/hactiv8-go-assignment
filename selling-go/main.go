@@ -6,9 +6,9 @@ import (
 )
 
 func main() {
-	databases.StartDB()
+	db := databases.StartDB()
 
-	r := routers.StartApp()
+	r := routers.StartApp(db)
 
 	r.Run(":8090")
 }
