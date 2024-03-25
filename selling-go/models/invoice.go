@@ -10,5 +10,5 @@ type Invoice struct {
 	Rate         uint
 	TotalPayment uint
 	Status       string
-	Payments     Payment
+	Payments     []Payment
 }

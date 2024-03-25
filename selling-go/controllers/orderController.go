@@ -59,11 +59,12 @@ func (idb Handler) CreateOrder(c *gin.Context) {
 	}
 
 	Order.Invoices = Invoice
-	err = idb.DB.Debug().Create(&Order).Error
+
+	err = idb.DB.Preload("Payments").Create(&Order).Error
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err,
+			"error": err.Error(),
 		})
 		return
 	}
@@ -86,7 +87,7 @@ func (idb Handler) CreateOrder(c *gin.Context) {
 
 func (idb Handler) GetAllOrder(c *gin.Context) {
 	Order := []models.Order{}
-	// Invoice := []models.Invoice{}
+
 	userData := c.MustGet("userData").(jwt.MapClaims)
 
 	if userData["role"] != "admin" {
@@ -97,7 +98,7 @@ func (idb Handler) GetAllOrder(c *gin.Context) {
 		return
 	}
 
-	err := idb.DB.Preload("Invoices").Find(&Order).Error
+	err := idb.DB.Preload("Invoices").Preload("Payments").Find(&Order).Error
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   "Bad Request",

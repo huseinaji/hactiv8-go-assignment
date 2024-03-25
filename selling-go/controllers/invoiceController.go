@@ -20,7 +20,7 @@ func (idb Handler) GetAllInvoice(c *gin.Context) {
 		return
 	}
 
-	err := idb.DB.Find(&Invoice).Error
+	err := idb.DB.Preload("Payments").Find(&Invoice).Error
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
@@ -41,7 +41,7 @@ func (idb Handler) GetInvoiceById(c *gin.Context) {
 	id := c.Param("id")
 	userData := c.MustGet("userData").(jwt.MapClaims)
 
-	err := idb.DB.First(&Invoice, id).Error
+	err := idb.DB.Preload("Payments").First(&Invoice, id).Error
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
